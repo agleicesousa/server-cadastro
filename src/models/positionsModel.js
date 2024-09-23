@@ -16,7 +16,7 @@ const createPositionsModel = async (cargo) => {
 const getAllPositionsModel = async () => {
     const query = `SELECT * FROM cargos;`
     const result = await connection.query(query)
-    return result.rows;
+    return result.rows
 }
 
 // Função para buscar um cargo pelo ID

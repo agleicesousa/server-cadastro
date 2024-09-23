@@ -1,13 +1,17 @@
 const { validationResult } = require('express-validator');
-const { createPositionsModel, getAllPositionsModel } = require('../models/positionsModel');
+const {
+    getPositionByIdModel, 
+    createPositionsModel, 
+    getAllPositionsModel 
+} = require('../models/positionsModel');
 
 // Middleware de tratamento de erros  
-const errorHandler = (err, req, res, next) => {  
+const errorHandler = (err, req, res, next) => {
     console.error(err.stack);
-    res.status(500).json({ 
-        success: false, 
-        message: 'Erro interno no servidor.', 
-        error: err.message 
+    res.status(500).json({
+        success: false,
+        message: 'Erro interno no servidor.',
+        error: err.message
     })
 }
 
@@ -18,7 +22,7 @@ async function createPositions(req, res, next) {
         return res.status(400).json({ success: false, errors: errors.array() });
     }
 
-    try {  
+    try {
         const cargo = req.body;
         const newCargo = await createPositionsModel(cargo);
         res.status(201).json({
@@ -31,7 +35,7 @@ async function createPositions(req, res, next) {
     }
 }
 
-// Função para listar todos os cargos
+// Listar todos os cargos
 async function getAllPositions(req, res, next) {
     try {
         const positions = await getAllPositionsModel();
@@ -44,8 +48,28 @@ async function getAllPositions(req, res, next) {
     }
 }
 
+// Buscar um cargos por ID
+async function getPositionById(req, res, next) {
+    const { id } = req.params
+
+    try {
+        const cargo = await getPositionByIdModel(id)
+
+        if (!cargo) {
+            return res.status(404).json({
+                success: false, message: 'Cargo não encontrado.'
+            })
+        }
+
+        res.status(200).json({ success: true, data: cargo })
+    } catch (error) {
+        next(error)
+    }
+}
+
 module.exports = {
     createPositions,
     getAllPositions,
+    getPositionById,
     errorHandler
 };

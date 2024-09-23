@@ -17,9 +17,18 @@ const getAllPositionsModel = async () => {
     const query = `SELECT * FROM cargos;`
     const result = await connection.query(query)
     return result.rows;
-};
+}
+
+// Função para buscar um cargo pelo ID
+const getPositionByIdModel = async (id) => {
+    const query = `SELECT * FROM cargos WHERE id = $1;`
+    const values = [id]
+    const result = await connection.query(query, values)
+    return result.rows[0]
+}
 
 module.exports = {
     createPositionsModel,
     getAllPositionsModel,
-};
+    getPositionByIdModel,
+}

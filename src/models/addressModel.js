@@ -1,13 +1,13 @@
-const connection = require('./Connection')
+const connection = require('./connection')
 
 // Função para criar o endereço do membro
 const createAddressModel = async (endereco) => {
     const query = `
-        INSERT INTO enderecos (rua, numero, bairro, cidade, estado, cep)
-        VALUES ($1, $2, $3, $4, $5, $6)
+        INSERT INTO enderecos (rua, numero, bairro, cidade, estado, cep, complemento)
+        VALUES ($1, $2, $3, $4, $5, $6, $7)
         RETURNING *;
     `
-    const values = [endereco.rua, endereco.numero, endereco.bairro, endereco.cidade, endereco.estado, endereco.cep]
+    const values = [endereco.rua, endereco.numero, endereco.bairro, endereco.cidade, endereco.estado, endereco.cep, endereco.complemento]
     const result = await connection.query(query, values)
     return result.rows[0]
 }
@@ -36,7 +36,7 @@ const getAddressesByParamsModel = async (params) => {
         const paramValue = params[key];
         // Verifica se o valor é definido, é uma string não vazia ou um número
         if (paramValue !== undefined && paramValue !== null && paramValue !== '') {
-            whereClause.push(`${key} = $${values.length + 1}`) // Mudamos aqui para adicionar corretamente os valores
+            whereClause.push(`${key} = $${values.length + 1}`)
             values.push(paramValue)
         }
     })
@@ -50,7 +50,7 @@ const getAddressesByParamsModel = async (params) => {
     console.log("VALUES: ", values) // Para depuração
 
     const result = await connection.query(query, values)
-    return result.rows;  
+    return result.rows
 }
 
 module.exports = {  
@@ -58,4 +58,4 @@ module.exports = {
     getAllAddressesModel,
     getAddressByIdModel,
     getAddressesByParamsModel,  
-};
+}

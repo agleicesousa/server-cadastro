@@ -7,9 +7,6 @@ const { validateAddressCreation, validateAddressUpdate } = require('../middlewar
 // Rota para criação de endereços  
 router.post('/', validateAddressCreation, addressController.createAddress)
 
-// Rota para atualizar endereço (parcialmente)  
-router.put('/:id', validateAddressUpdate, addressController.updateAddressController)
-
 // Rota para obter todos os endereços
 router.get('/', addressController.getAllAddresses)
 
@@ -18,6 +15,9 @@ router.get('/buscar', addressController.getAddressesByParamsController)
 
 // Rota para buscar endereço por ID
 router.get('/:id', addressController.getAddressByIdController)
+
+// Rota para atualizar endereço (parcialmente)  
+router.put('/:id', validateAddressUpdate, addressController.updateAddressController)
 
 // Rota para deletar endereço
 router.delete('/:id', addressController.deleteAddressController);

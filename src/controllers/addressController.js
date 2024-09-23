@@ -2,8 +2,8 @@ const { validationResult } = require('express-validator')
 const {
     createAddressModel,
     getAllAddressesModel,
-    getAddressesByParamsModel,
     getAddressByIdModel,
+    getAddressesByParamsModel,
     updateAddressModel,
     deleteAddressModel
 } = require('../models/addressModel')
@@ -105,7 +105,7 @@ async function updateAddressController(req, res, next) {
             if (req.body[field] !== undefined) {
                 updatedFields[field] = req.body[field]
             }
-        });
+        })
 
         if (Object.keys(updatedFields).length === 0) {
             return res.status(400).json({ 

@@ -8,7 +8,7 @@ const errorHandler = (err, req, res, next) => {
         success: false, 
         message: 'Erro interno no servidor.', 
         error: err.message 
-    });
+    })
 }
 
 // Cria um novo cargo  
@@ -40,7 +40,7 @@ async function getAllPositions(req, res, next) {
             data: positions,
         });
     } catch (error) {
-        next(error);
+        next(error)
     }
 }
 

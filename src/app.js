@@ -9,6 +9,7 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
+// Rota de endereços
 app.use('/enderecos', addressRouter);
 
 app.listen(process.env.PORT || 3000, () => {

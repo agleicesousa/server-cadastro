@@ -1,33 +1,61 @@
-const connection = require('./connection');
+const connection = require('./Connection')
 
 // Função para criar o endereço do membro
-async function createAddressModel(endereco) {
-    const { rua, numero, bairro, cidade, estado, cep, complemento } = endereco;
-
-    try {
-        const result = await connection.query(
-            `INSERT INTO enderecos (rua, numero, bairro, cidade, estado, cep, complemento)
-            VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING id`,
-            [rua, numero, bairro, cidade, estado, cep, complemento]
-        );
-
-        return { id: result.rows[0].id };
-    } catch (error) {
-        throw new Error('Erro ao criar endereço: ' + error.message);
-    }
+const createAddressModel = async (endereco) => {
+    const query = `
+        INSERT INTO enderecos (rua, numero, bairro, cidade, estado, cep)
+        VALUES ($1, $2, $3, $4, $5, $6)
+        RETURNING *;
+    `
+    const values = [endereco.rua, endereco.numero, endereco.bairro, endereco.cidade, endereco.estado, endereco.cep]
+    const result = await connection.query(query, values)
+    return result.rows[0]
 }
 
 // Função para buscar todos os endereços
-async function getAllAddressesModel() {
-    try {
-        const result = await connection.query('SELECT * FROM enderecos');
-        return result.rows;
-    } catch (error) {
-        throw new Error('Erro ao buscar endereços: ' + error.message);
-    }
+const getAllAddressesModel = async () => {  
+    const query = "SELECT * FROM enderecos;"
+    const result = await connection.query(query)
+    return result.rows
 }
 
-module.exports = {
+// Função para buscar um endereço pelo ID
+const getAddressByIdModel = async (id) => {  
+    const query = "SELECT * FROM enderecos WHERE id = $1;"
+    const values = [id]
+    const result = await connection.query(query, values)
+    return result.rows[0]
+}
+
+// Função para buscar endereços com base em parâmetros de query e retornar os resultados em ordem crescente pelo número do endereço
+const getAddressesByParamsModel = async (params) => {  
+    const whereClause = []
+    const values = []
+
+    Object.keys(params).forEach((key, index) => {
+        const paramValue = params[key];
+        // Verifica se o valor é definido, é uma string não vazia ou um número
+        if (paramValue !== undefined && paramValue !== null && paramValue !== '') {
+            whereClause.push(`${key} = $${values.length + 1}`) // Mudamos aqui para adicionar corretamente os valores
+            values.push(paramValue)
+        }
+    })
+
+    const query = `
+        SELECT * FROM enderecos  
+        ${whereClause.length > 0 ? `WHERE ${whereClause.join(' AND ')}` : ''}
+    `
+    
+    console.log("QUERY: ", query) // Para depuração
+    console.log("VALUES: ", values) // Para depuração
+
+    const result = await connection.query(query, values)
+    return result.rows;  
+}
+
+module.exports = {  
     createAddressModel,
     getAllAddressesModel,
+    getAddressByIdModel,
+    getAddressesByParamsModel,  
 };

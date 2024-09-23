@@ -1,26 +1,14 @@
-function validateAddress(req, res, next) {
-    const { rua, numero, bairro, cidade, estado, cep } = req.body;
+const { body } = require('express-validator');  
 
-    // Verificar se os campos obrigatórios estão presentes
-    if (!rua || !numero || !bairro || !cidade || !estado || !cep) {
-        return res.status(400).json({ message: 'Todos os campos obrigatórios devem ser preenchidos: rua, numero, bairro, cidade, estado, cep' });
-    }
+const validateAddress = [  
+    body('rua').notEmpty().withMessage('A rua é obrigatória.'),  
+    body('numero').isNumeric().withMessage('O número deve ser numérico.'),  
+    body('bairro').notEmpty().withMessage('O bairro é obrigatório.'),  
+    body('cidade').notEmpty().withMessage('A cidade é obrigatória.'),  
+    body('estado').notEmpty().withMessage('O estado é obrigatório.'),  
+    body('cep').matches(/^\d{5}-?\d{3}$/).withMessage('CEP deve estar no formato 12345-678.'),  
+];  
 
-    // Verificar se o número é um valor numérico
-    if (isNaN(numero)) {
-        return res.status(400).json({ message: 'O número deve ser um valor numérico' });
-    }
-
-    // Verificar se o CEP tem um formato válido (por exemplo, 5 dígitos seguidos de 3 dígitos no Brasil)
-    const cepRegex = /^[0-9]{5}-?[0-9]{3}$/;
-    if (!cepRegex.test(cep)) {
-        return res.status(400).json({ message: 'O CEP deve estar no formato 00000-000' });
-    }
-
-    // Validação passou, pode prosseguir para o controlador
-    next();
-}
-
-module.exports = {
-    validateAddress,
+module.exports = {  
+    validateAddress,  
 };

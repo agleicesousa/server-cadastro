@@ -132,7 +132,6 @@ async function updateAddressController(req, res, next) {
 // Deleta um endereço por ID
 async function deleteAddressController(req, res, next) {
     const { id } = req.params;
-    console.log('ID recebido:', id);
 
     try {
         const deleted = await deleteAddressModel(id);
@@ -160,4 +159,4 @@ module.exports = {
     updateAddressController,
     deleteAddressController,
     errorHandler
-};
+}

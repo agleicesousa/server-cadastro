@@ -27,8 +27,34 @@ const getPositionByIdModel = async (id) => {
     return result.rows[0]
 }
 
+// Função para atualizar um cargo
+const updatePositionModel = async (id, updatedFields) => {
+    const setClause = []
+    const values = []
+
+    // Construindo dinamicamente os campos que devem ser atualizados
+    Object.keys(updatedFields).forEach((key, index) => {
+        setClause.push(`${key} = $${index + 1}`)
+        values.push(updatedFields[key])
+    })
+
+    // Adiciona o ID no array de valores
+    values.push(id)
+
+    const query = `
+    UPDATE cargos
+    SET ${setClause.join(', ')}
+    WHERE id = $${values.length}
+    RETURNING *;
+`
+
+    const result = await connection.query(query, values)
+    return result.rows[0]
+}
+
 module.exports = {
     createPositionsModel,
     getAllPositionsModel,
     getPositionByIdModel,
+    updatePositionModel,
 }

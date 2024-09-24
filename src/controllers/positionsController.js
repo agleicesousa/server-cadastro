@@ -2,7 +2,8 @@ const { validationResult } = require('express-validator');
 const {
     getPositionByIdModel, 
     createPositionsModel, 
-    getAllPositionsModel 
+    getAllPositionsModel,
+    updatePositionModel,
 } = require('../models/positionsModel');
 
 // Middleware de tratamento de erros  
@@ -67,9 +68,50 @@ async function getPositionById(req, res, next) {
     }
 }
 
+async function updatePositionController(req, res, next) {
+    const { id } = req.params
+    const errors = validationResult(req)
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ success: false, errors: errors.array() })
+    }
+
+    try {
+        // Pega apenas os campos que foram enviados
+        const updatedFields = {};
+        const allowedFields = ['nome', 'descricao']
+        
+        allowedFields.forEach((field) => {
+            if (req.body[field] !== undefined) {
+                updatedFields[field] = req.body[field]
+            }
+        })
+
+        if (Object.keys(updatedFields).length === 0) {
+            return res.status(400).json({ 
+                success: false, message: 'Nenhum campo enviado para atualização.' 
+            })
+        }
+
+        const updatedCargo = await updatePositionModel(id, updatedFields)
+        if (!updatedCargo) {
+            return res.status(404).json({ 
+                success: false, message: 'Cargo não encontrado.' 
+            })
+        }
+
+        return res.status(200).json({ 
+            success: true, message: 'Cargo atualizado com sucesso!', data: updatedCargo 
+        })
+
+    } catch (error) {
+        next(error)
+    }
+}
+
 module.exports = {
     createPositions,
     getAllPositions,
     getPositionById,
+    updatePositionController,
     errorHandler
-};
+}

@@ -2,10 +2,10 @@ const express = require('express')
 const router = express.Router()
 
 const addressController = require('../controllers/addressController')
-const { validateAddressCreation, validateAddressUpdate } = require('../middleware/addressMiddleware')
+const { validateCreation, validateUpdate } = require('../middleware/generalMiddleware')
 
 // Rota para criação de endereços  
-router.post('/', validateAddressCreation, addressController.createAddress)
+router.post('/', validateCreation, addressController.createAddress)
 
 // Rota para obter todos os endereços
 router.get('/', addressController.getAllAddresses)
@@ -17,7 +17,7 @@ router.get('/buscar', addressController.getAddressesByParamsController)
 router.get('/:id', addressController.getAddressByIdController)
 
 // Rota para atualizar endereço (parcialmente)  
-router.put('/:id', validateAddressUpdate, addressController.updateAddressController)
+router.put('/:id', validateUpdate, addressController.updateAddressController)
 
 // Rota para deletar endereço
 router.delete('/:id', addressController.deleteAddressController)

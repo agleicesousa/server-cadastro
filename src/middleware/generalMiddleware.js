@@ -1,4 +1,4 @@
-const { body } = require('express-validator');
+const { body } = require('express-validator')
 
 const ERROR_MESSAGES = {
     REQUIRED: (field) => `${field} é obrigatório.`,
@@ -22,15 +22,15 @@ const createValidationRules = (fields, isOptional = false) => {
                 return validation
         }
     });
-}
+};
 
-// Validações para criação de cargos
-const validatePositionCreation = createValidationRules(['nome', 'descricao'])
+// Validações para criação
+const validateCreation = createValidationRules(['nome', 'descricao'])
 
-// Validações para atualização de cargos (usando a função genérica com `isOptional` como true)
-const validatePositionUpdate = createValidationRules(['nome', 'descricao'], true)
+// Validações para atualização (usando a função genérica com `isOptional` como true)
+const validateUpdate = createValidationRules(['nome', 'descricao'], true)
 
 module.exports = {
-    validatePositionCreation,
-    validatePositionUpdate,
+    validateCreation,
+    validateUpdate,
 };

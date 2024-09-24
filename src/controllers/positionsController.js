@@ -5,7 +5,7 @@ const {
     getAllPositionsModel,
     updatePositionModel,
     deletePositionModel,
-} = require('../models/positionsModel');
+} = require('../models/positionsModel')
 
 // Middleware de tratamento de erros  
 const errorHandler = (err, req, res, next) => {

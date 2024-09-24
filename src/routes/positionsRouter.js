@@ -2,10 +2,10 @@ const express = require('express')
 const router = express.Router()
 
 const positionsController = require('../controllers/positionsController')
-const { validatePositionCreation, validatePositionUpdate } = require('../middleware/positionsMiddleware')
+const { validateCreation, validateUpdate } = require('../middleware/generalMiddleware')
 
 // Rota para criação de Cargos
-router.post('/', validatePositionCreation, positionsController.createPositions)
+router.post('/', validateCreation, positionsController.createPositions)
 
 // Rota para listar todos os Cargos
 router.get('/', positionsController.getAllPositions)
@@ -14,7 +14,7 @@ router.get('/', positionsController.getAllPositions)
 router.get('/:id', positionsController.getPositionById)
 
 // Rota para atualizar um cargo (parcialmente)
-router.put('/:id', validatePositionUpdate, positionsController.updatePositionController)
+router.put('/:id', validateUpdate, positionsController.updatePositionController)
 
 // Rota para deletar um cargo
 router.delete('/:id', positionsController.deletePositionController)

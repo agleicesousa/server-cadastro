@@ -10,24 +10,24 @@ const ERROR_MESSAGES = {
 // Função de validação genérica
 const createValidationRules = (fields, isOptional = false) => {
     return fields.map((field) => {
-        const validation = isOptional ? body(field).optional() : body(field).notEmpty().withMessage(ERROR_MESSAGES.REQUIRED(field))
+        const validation = isOptional ? body(field).optional() : body(field).notEmpty().withMessage(ERROR_MESSAGES.REQUIRED(field));
 
         switch (field) {
             case 'numero':
-                return validation.isNumeric().withMessage(ERROR_MESSAGES.NUMERIC)
+                return validation.isNumeric().withMessage(ERROR_MESSAGES.NUMERIC);
             case 'cep':
-                return validation.matches(/^\d{5}-?\d{3}$/).withMessage(ERROR_MESSAGES.CEP_FORMAT)
+                return validation.matches(/^\d{5}-?\d{3}$/).withMessage(ERROR_MESSAGES.CEP_FORMAT);
             default:
-                return validation
+                return validation;
         }
-    })
-}
+    });
+};
 
 // Validações para criação de endereço
-const validateAddressCreation = createValidationRules(['rua', 'numero', 'bairro', 'cidade', 'estado', 'cep'])
+const validateAddressCreation = createValidationRules(['rua', 'numero', 'bairro', 'cidade', 'estado', 'cep']);
 
 // Validações para atualização de endereço (usando a função genérica com `isOptional` como true)
-const validateAddressUpdate = createValidationRules(['rua', 'numero', 'bairro', 'cidade', 'estado', 'cep'], true)
+const validateAddressUpdate = createValidationRules(['rua', 'numero', 'bairro', 'cidade', 'estado', 'cep'], true);
 
 module.exports = {
     validateAddressCreation,

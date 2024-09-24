@@ -1,25 +1,19 @@
-const express = require('express')
-const router = express.Router()
+const express = require('express');
+const {
+    createPosition,
+    getAllPositions,
+    getPositionById,
+    updatePosition,
+    deletePosition,
+} = require('../controllers/positionsController');
+const { validateCreation, validateUpdate } = require('../middlewares/genericMiddleware');
 
-const positionsController = require('../controllers/positionsController')
-const { validateCreation, validateUpdate } = require('../middlewares/generalMiddleware')
+const router = express.Router();
 
-// Rota para criação de Cargos
-router.post('/', validateCreation, positionsController.createPositions)
-
-// Rota para listar todos os Cargos
-router.get('/', positionsController.getAllPositions)
-
-// Rota para buscar um cargo pelo ID
-router.get('/:id', positionsController.getPositionById)
-
-// Rota para atualizar um cargo (parcialmente)
-router.put('/:id', validateUpdate, positionsController.updatePositionController)
-
-// Rota para deletar um cargo
-router.delete('/:id', positionsController.deletePositionController)
-
-// Middleware de Tratamento de Erros
-router.use(positionsController.errorHandler)
+router.post('/', validateCreation, createPosition);
+router.get('/', getAllPositions);
+router.get('/:id', getPositionById);
+router.put('/:id', validateUpdate, updatePosition);
+router.delete('/:id', deletePosition);
 
 module.exports = router;

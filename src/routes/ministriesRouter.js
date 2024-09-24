@@ -1,16 +1,19 @@
-const express = require('express')
-const router = express.Router()
+const express = require('express');
+const {
+    createMinistry,
+    getAllMinistries,
+    getMinistryById,
+    updateMinistry,
+    deleteMinistry,
+} = require('../controllers/ministriesController');
+const { validateCreation, validateUpdate } = require('../middlewares/genericMiddleware');
 
-const ministriesController = require('../controllers/ministriesController')
-const { validateCreation, validateUpdate } = require('../middlewares/generalMiddleware')
+const router = express.Router();
 
-// Rota para criação de Ministérios
-router.post('/', validateCreation, ministriesController.createMinistry)
+router.post('/', validateCreation, createMinistry);
+router.get('/', getAllMinistries);
+router.get('/:id', getMinistryById);
+router.put('/:id', validateUpdate, updateMinistry);
+router.delete('/:id', deleteMinistry);
 
-// Rota para listar todos os Ministérios
-router.get('/', ministriesController.getAllMinistries)
-
-// Middleware de Tratamento de Erros
-router.use(ministriesController.errorHandler)
-
-module.exports = router
+module.exports = router;

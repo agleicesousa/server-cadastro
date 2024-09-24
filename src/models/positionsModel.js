@@ -1,65 +1,24 @@
-const connection = require('./connection')
+const { createEntity, getAllEntities, getEntityById, updateEntity, deleteEntity } = require('./genericModel');
 
-// Função para criar um novo cargo
-const createPositionsModel = async (cargo) => {
-    const query = `
-        INSERT INTO cargos (nome, descricao)
-        VALUES ($1, $2)
-        RETURNING *;
-    `
-    const values = [cargo.nome, cargo.descricao]
-    const result = await connection.query(query, values)
-    return result.rows[0]
-}
+const createPositionsModel = async (position) => {
+    return createEntity('cargos', position);
+};
 
-// Função para obter todos os cargos
 const getAllPositionsModel = async () => {
-    const query = `SELECT * FROM cargos;`
-    const result = await connection.query(query)
-    return result.rows
-}
+    return getAllEntities('cargos');
+};
 
-// Função para buscar um cargo pelo ID
 const getPositionByIdModel = async (id) => {
-    const query = `SELECT * FROM cargos WHERE id = $1;`
-    const values = [id]
-    const result = await connection.query(query, values)
-    return result.rows[0]
-}
+    return getEntityById('cargos', id);
+};
 
-// Função para atualizar um cargo
 const updatePositionModel = async (id, updatedFields) => {
-    const setClause = []
-    const values = []
+    return updateEntity('cargos', id, updatedFields);
+};
 
-    // Construindo dinamicamente os campos que devem ser atualizados
-    Object.keys(updatedFields).forEach((key, index) => {
-        setClause.push(`${key} = $${index + 1}`)
-        values.push(updatedFields[key])
-    })
-
-    // Adiciona o ID no array de valores
-    values.push(id)
-
-    const query = `
-    UPDATE cargos
-    SET ${setClause.join(', ')}
-    WHERE id = $${values.length}
-    RETURNING *;
-`
-
-    const result = await connection.query(query, values)
-    return result.rows[0]
-}
-
-// Função para deletar um cargo
 const deletePositionModel = async (id) => {
-    const query = "DELETE FROM cargos WHERE id = $1 RETURNING *;"
-    const values = [id]
-    const result = await connection.query(query, values)
-    console.log('Row count:', result.rowCount)
-    return result.rowCount > 0
-}
+    return deleteEntity('cargos', id);
+};
 
 module.exports = {
     createPositionsModel,
@@ -67,4 +26,4 @@ module.exports = {
     getPositionByIdModel,
     updatePositionModel,
     deletePositionModel,
-}
+};

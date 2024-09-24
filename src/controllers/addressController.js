@@ -8,14 +8,6 @@ const {
     deleteAddressModel
 } = require('../models/addressModel')
 
-// Middleware de tratamento de erros  
-const errorHandler = (err, req, res, next) => {  
-    console.error(err.stack)
-    res.status(500).json({ 
-        success: false, message: 'Erro interno no servidor.', error: err.message 
-    })
-}
-
 // Cria um novo endereço  
 async function createAddress(req, res, next) {
     const errors = validationResult(req)
@@ -158,5 +150,4 @@ module.exports = {
     getAddressesByParamsController,
     updateAddressController,
     deleteAddressController,
-    errorHandler
 }

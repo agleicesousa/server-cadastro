@@ -1,25 +1,29 @@
-const connection = require('./connection')
+const { createEntity, getAllEntities, getEntityById, updateEntity, deleteEntity } = require('./genericModel');
 
-// Função para criar um novo ministério
-const createMinistryModel = async (ministro) => {
-    const query = `
-        INSERT INTO ministerios (nome, descricao)
-        VALUES ($1, $2)
-        RETURNING *;
-    `;
-    const values = [ministro.nome, ministro.descricao]
-    const result = await connection.query(query, values)
-    return result.rows[0]
-}
+const createMinistryModel = async (ministry) => {
+    return createEntity('ministerios', ministry);
+};
 
-// Função para buscar todos os ministérios
 const getAllMinistriesModel = async () => {
-    const query = "SELECT * FROM ministerios;"
-    const result = await connection.query(query)
-    return result.rows;
+    return getAllEntities('ministerios');
+};
+
+const getMinistryByIdModel = async (id) => {
+    return getEntityById('ministerios', id);
+};
+
+const updateMinistryModel = async (id, updatedFields) => {
+    return updateEntity('ministerios', id, updatedFields);
+};
+
+const deleteMinistryModel = async (id) => {
+    return deleteEntity('ministerios', id);
 };
 
 module.exports = {
     createMinistryModel,
     getAllMinistriesModel,
+    getMinistryByIdModel,
+    updateMinistryModel,
+    deleteMinistryModel,
 };

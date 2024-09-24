@@ -1,28 +1,17 @@
-const express = require('express')
-const cors = require('cors')
-const dotenv = require('dotenv')
+const express = require('express');
+const ministriesRouter = require('./routes/ministriesRouter');
+const positionsRouter = require('./routes/positionsRouter');
+const addressRouter = require('./routes/addressRouter');
+const { errorHandler } = require('./middlewares/errorHandler');
 
-const addressRouter = require('./routes/addressRouter')
-const positionRouter = require('./routes/positionsRouter')
-const ministriesRouter = require('./routes/ministriesRouter')
+const app = express();
+const PORT = process.env.PORT || 3000;
 
-dotenv.config()
+app.use(express.json());
+app.use('/api/ministerios', ministriesRouter);
+app.use('/api/cargos', positionsRouter);
+app.use('/api/enderecos', addressRouter);
 
-const app = express()
-app.use(express.json())
-app.use(cors())
+app.use(errorHandler);
 
-// Rota de endereços
-app.use('/enderecos', addressRouter)
-
-// Rota de cargos
-app.use('/cargos', positionRouter)
-
-// Rota de ministérios
-app.use('/ministerios', ministriesRouter)
-
-app.listen(process.env.PORT || 3000, () => {
-    console.log(`Servidor rodando na porta ${process.env.PORT || 3000}`)
-});
-
-module.exports = app
+module.exports = app;

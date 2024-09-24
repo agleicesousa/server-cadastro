@@ -52,9 +52,19 @@ const updatePositionModel = async (id, updatedFields) => {
     return result.rows[0]
 }
 
+// Função para deletar um cargo
+const deletePositionModel = async (id) => {
+    const query = "DELETE FROM cargos WHERE id = $1 RETURNING *;"
+    const values = [id]
+    const result = await connection.query(query, values)
+    console.log('Row count:', result.rowCount)
+    return result.rowCount > 0
+}
+
 module.exports = {
     createPositionsModel,
     getAllPositionsModel,
     getPositionByIdModel,
     updatePositionModel,
+    deletePositionModel,
 }

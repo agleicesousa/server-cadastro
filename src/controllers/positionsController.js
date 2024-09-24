@@ -4,6 +4,7 @@ const {
     createPositionsModel, 
     getAllPositionsModel,
     updatePositionModel,
+    deletePositionModel,
 } = require('../models/positionsModel');
 
 // Middleware de tratamento de erros  
@@ -30,9 +31,9 @@ async function createPositions(req, res, next) {
             success: true,
             message: 'Novo cargo adicionado com sucesso!',
             cargo: newCargo
-        });
+        })
     } catch (error) {
-        next(error);
+        next(error)
     }
 }
 
@@ -43,7 +44,7 @@ async function getAllPositions(req, res, next) {
         res.status(200).json({
             success: true,
             data: positions,
-        });
+        })
     } catch (error) {
         next(error)
     }
@@ -68,6 +69,7 @@ async function getPositionById(req, res, next) {
     }
 }
 
+// Atualizar um cargo por ID
 async function updatePositionController(req, res, next) {
     const { id } = req.params
     const errors = validationResult(req)
@@ -108,10 +110,27 @@ async function updatePositionController(req, res, next) {
     }
 }
 
+// Deleta um cargo por ID
+async function deletePositionController(req, res, next) {
+    const { id } = req.params
+
+    try {
+        const deletedCargo = await deletePositionModel(id)
+        if (!deletedCargo) {
+            return res.status(404).json({ success: false, message: 'Cargo não encontrado.' })
+        }
+
+        return res.status(200).json({ success: true, message: 'Cargo deletado com sucesso!' })
+    } catch (error) {
+        next(error)
+    }
+}
+
 module.exports = {
     createPositions,
     getAllPositions,
     getPositionById,
     updatePositionController,
+    deletePositionController,
     errorHandler
 }

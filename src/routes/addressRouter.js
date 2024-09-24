@@ -20,7 +20,7 @@ router.get('/:id', addressController.getAddressByIdController)
 router.put('/:id', validateAddressUpdate, addressController.updateAddressController)
 
 // Rota para deletar endereço
-router.delete('/:id', addressController.deleteAddressController);
+router.delete('/:id', addressController.deleteAddressController)
 
 // Middleware de Tratamento de Erros
 router.use(addressController.errorHandler)

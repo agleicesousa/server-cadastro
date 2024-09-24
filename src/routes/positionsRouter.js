@@ -16,6 +16,9 @@ router.get('/:id', positionsController.getPositionById)
 // Rota para atualizar um cargo (parcialmente)
 router.put('/:id', validatePositionUpdate, positionsController.updatePositionController)
 
+// Rota para deletar um cargo
+router.delete('/:id', positionsController.deletePositionController)
+
 // Middleware de Tratamento de Erros
 router.use(positionsController.errorHandler)
 

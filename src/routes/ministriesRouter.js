@@ -2,7 +2,7 @@ const express = require('express')
 const router = express.Router()
 
 const ministriesController = require('../controllers/ministriesController')
-const { validateCreation, validateUpdate } = require('../middleware/generalMiddleware')
+const { validateCreation, validateUpdate } = require('../middlewares/generalMiddleware')
 
 // Rota para criação de Ministérios
 router.post('/', validateCreation, ministriesController.createMinistry)

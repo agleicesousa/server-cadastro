@@ -2,7 +2,7 @@ const express = require('express')
 const router = express.Router()
 
 const positionsController = require('../controllers/positionsController')
-const { validateCreation, validateUpdate } = require('../middleware/generalMiddleware')
+const { validateCreation, validateUpdate } = require('../middlewares/generalMiddleware')
 
 // Rota para criação de Cargos
 router.post('/', validateCreation, positionsController.createPositions)

@@ -2,7 +2,7 @@ const express = require('express')
 const router = express.Router()
 
 const addressController = require('../controllers/addressController')
-const { validateCreation, validateUpdate } = require('../middleware/generalMiddleware')
+const { validateCreation, validateUpdate } = require('../middlewares/generalMiddleware')
 
 // Rota para criação de endereços  
 router.post('/', validateCreation, addressController.createAddress)
